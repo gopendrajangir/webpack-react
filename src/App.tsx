@@ -1,8 +1,21 @@
-export default function App() {
+import NavigationBar from './components/NavigationBar';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+
+function App() {
   return (
-    <div>
-      <h1>Webpack Setup</h1>
-      <p>This webpack setup is done by Gopendra.</p>
-    </div>
+    <Router>
+      <NavigationBar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login/*" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+      </Routes>
+    </Router>
   );
 }
+
+export default App;

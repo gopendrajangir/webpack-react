@@ -1,6 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const TsconfigPathsWebpackPlugin = require('tsconfig-paths-webpack-plugin');
+
 module.exports = {
   entry: {
     app: './src/index.tsx',
@@ -12,23 +14,38 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      favicon: './public/logo.ico',
+      favicon: './public/favicon.ico',
       inject: 'body',
     }),
   ],
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.json', '.scss', '.css'],
+    extensions: ['.tsx', '.ts', '.js', '.json', '.scss', '.css', '.svg'],
+    plugins: [
+      new TsconfigPathsWebpackPlugin({
+        configFile: path.resolve(process.cwd(), './tsconfig.json'),
+      }),
+    ],
   },
   module: {
     rules: [
       {
         test: /(\.s?css)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        exclude: /node_modules/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+        // exclude: /node_modules/,
       },
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.svg$/,
+        use: 'react-svg-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.(png|jpg)/,
+        use: 'file-loader',
         exclude: /node_modules/,
       },
     ],
